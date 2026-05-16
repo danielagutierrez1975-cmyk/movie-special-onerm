@@ -22,6 +22,23 @@ const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
 /** @type {Map<string, { redirect_to: string|null, messageId: string|null, lastActivity: number }>} */
 const sessions = new Map();
 
+/** sessionId completo → id corto para botones (máx. 100 chars en custom_id) */
+const sessionShortIds = new Map();
+
+function getShortSessionId(sessionId) {
+  for (const [short, full] of sessionShortIds) {
+    if (full === sessionId) return short;
+  }
+  const short =
+    sessionId.replace(/[^a-zA-Z0-9]/g, "").slice(-20) || sessionId.slice(0, 20);
+  sessionShortIds.set(short, sessionId);
+  return short;
+}
+
+function resolveSessionId(shortOrFull) {
+  return sessionShortIds.get(shortOrFull) || shortOrFull;
+}
+
 /** @type {import('discord.js').Client|null} */
 let discordClient = null;
 
@@ -41,8 +58,10 @@ function buildControlRows(sessionId) {
   const rows = [];
   let currentRow = new ActionRowBuilder();
 
+  const shortId = getShortSessionId(sessionId);
+
   BUTTONS.forEach((btn, index) => {
-    const customId = `ctrl:${sessionId}:${btn.action}`;
+    const customId = `c:${shortId}:${btn.action}`;
     const button = new ButtonBuilder()
       .setCustomId(customId)
       .setLabel(btn.label)
@@ -65,7 +84,18 @@ async function sendOrUpdateControlMessage(sessionId, content, source = "sistema"
     return null;
   }
 
-  const channel = await discordClient.channels.fetch(CHANNEL_ID);
+  let channel;
+  try {
+    channel = await discordClient.channels.fetch(CHANNEL_ID);
+  } catch (err) {
+    const msg = err.message || String(err);
+    if (msg.includes("Missing Access") || msg.includes("50001")) {
+      throw new Error(
+        "El bot no tiene acceso al canal. Reinvítalo al servidor con permisos de Enviar mensajes y Ver canal, y verifica DISCORD_CHANNEL_ID."
+      );
+    }
+    throw err;
+  }
   if (!channel || !channel.isTextBased()) {
     throw new Error("Canal de Discord no válido o no es de texto.");
   }
@@ -134,6 +164,22 @@ async function startDiscordBot() {
   discordClient.once("ready", async () => {
     console.log(`[Discord] Bot conectado como ${discordClient.user.tag}`);
 
+    if (CHANNEL_ID) {
+      try {
+        const ch = await discordClient.channels.fetch(CHANNEL_ID);
+        console.log(`[Discord] Canal OK: #${ch.name || CHANNEL_ID}`);
+      } catch (err) {
+        console.error(
+          `[Discord] NO puede escribir en canal ${CHANNEL_ID}: ${err.message}`
+        );
+        console.error(
+          "[Discord] Reinvita el bot: https://discord.com/oauth2/authorize?client_id=" +
+            CLIENT_ID +
+            "&permissions=2147567616&scope=bot"
+        );
+      }
+    }
+
     const rest = new REST({ version: "10" }).setToken(TOKEN);
     try {
       await rest.put(Routes.applicationCommands(CLIENT_ID), { body: [] });
@@ -146,9 +192,9 @@ async function startDiscordBot() {
     if (!interaction.isButton()) return;
 
     const parts = interaction.customId.split(":");
-    if (parts[0] !== "ctrl" || parts.length < 3) return;
+    if (parts[0] !== "c" || parts.length < 3) return;
 
-    const sessionId = parts[1];
+    const sessionId = resolveSessionId(parts[1]);
     const action = parts.slice(2).join(":");
 
     if (!ROUTES[action]) {
@@ -209,6 +255,13 @@ function createApp() {
 
       if (!sessionId || typeof sessionId !== "string") {
         return res.status(400).json({ success: false, error: "sessionId requerido" });
+      }
+
+      if (!discordClient?.isReady()) {
+        return res.status(503).json({
+          success: false,
+          error: "Bot de Discord aún no está listo. Espera unos segundos y reintenta.",
+        });
       }
 
       const text =
