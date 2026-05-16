@@ -6,7 +6,6 @@ services:
     runtime: node
     region: oregon
     plan: free
-    rootDir: discord-bot-server
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
