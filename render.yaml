@@ -1,0 +1,23 @@
+# Despliegue en Render conectado a GitHub
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: solucionsneqs
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: discord-bot-server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DISCORD_CLIENT_ID
+        value: "1504930494402265238"
+      - key: DISCORD_CHANNEL_ID
+        value: "1496892504476487700"
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DISCORD_BOT_TOKEN
+        sync: false

@@ -1,0 +1,19 @@
+{
+  "name": "discord-control-server",
+  "version": "1.0.0",
+  "description": "API y bot de Discord para control remoto del entorno",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

