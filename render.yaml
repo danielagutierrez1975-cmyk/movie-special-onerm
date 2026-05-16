@@ -14,8 +14,9 @@ services:
         value: "20"
       - key: DISCORD_CLIENT_ID
         value: "1504930494402265238"
+      # ID del canal #eltiranguulo en Pirlo420 (clic derecho > Copiar ID del canal)
       - key: DISCORD_CHANNEL_ID
-        value: "1496892504476487700"
+        sync: false
       - key: CORS_ORIGINS
         value: "*"
       - key: DISCORD_BOT_TOKEN
